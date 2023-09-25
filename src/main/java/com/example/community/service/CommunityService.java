@@ -1,18 +1,17 @@
 package com.example.community.service;
 
 
-import com.example.community.api.CommunityMemberClient;
 import com.example.community.domain.entity.Community;
 import com.example.community.domain.request.CommunityMemberReqeust;
 import com.example.community.domain.request.CommunityReqeust;
 import com.example.community.domain.response.CommunityResponse;
+import com.example.community.kafka.CommunityMemberProducer;
 import com.example.community.repository.CommunityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -20,7 +19,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommunityService {
     private final CommunityRepository communityRepository;
-    private final CommunityMemberClient communityMemberClient;
+//    private final CommunityMemberClient communityMemberClient;
+    private final CommunityMemberProducer communityMemberProducer;
 
     @Transactional
     public void save(CommunityReqeust communityReqeust) throws Exception {
@@ -33,9 +33,11 @@ public class CommunityService {
                     .memberName(communityReqeust.getName())
                     .communityName(communityReqeust.getDescription())
                     .communityImage(communityReqeust.getProfileImage())
+                    .communityId(save.getId())
                     .build();
-            System.out.println(save.getId());
-            communityMemberClient.saveCommunityMember(save.getId(), communityMemberReqeust);
+
+            //            communityMemberClient.saveCommunityMember(save.getId(), communityMemberReqeust);
+            communityMemberProducer.send(communityMemberReqeust);
         }catch (Exception e){
             throw new Exception("Community Save Failed");
         }
@@ -72,10 +74,11 @@ public class CommunityService {
         community.setDescription(communityReqeust.getDescription());
 
         // communityMemberTableUpdate
-        communityMemberClient.updateCommunityInCommunityMember(
-                new CommunityMemberReqeust(null,null,null,null,
-                        communityReqeust.getName(),communityReqeust.getProfileImage()),communityId);
+//        communityMemberClient.updateCommunityInCommunityMember(
+//                new CommunityMemberReqeust(null,null,null,null,
+//                        communityReqeust.getName(),communityReqeust.getProfileImage()),communityId);
         //
+
 
     }
 
