@@ -26,11 +26,11 @@ public class TopicConfig {
         return new JsonMessageConverter();
     }
 
-    @Bean
-    public CommonErrorHandler errorHandler(KafkaOperations<Object, Object> kafkaOperations) {
-        return new DefaultErrorHandler(
-                new DeadLetterPublishingRecoverer(kafkaOperations),
-                new FixedBackOff(1000L, 2)
-        );
-    }
+//    @Bean
+//    public CommonErrorHandler errorHandler(KafkaOperations<Object, Object> kafkaOperations) {
+//        return new DefaultErrorHandler(
+//                new DeadLetterPublishingRecoverer(kafkaOperations),
+//                new FixedBackOff(1000L, 2)
+//        );
+//    }
 }
