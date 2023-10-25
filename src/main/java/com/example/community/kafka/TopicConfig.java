@@ -15,10 +15,16 @@ import org.springframework.util.backoff.FixedBackOff;
 @Component
 public class TopicConfig {
     public final static String communityMember = "communityMember";
+    public final static String communitySearch = "communitySearch";
 
     @Bean
     public NewTopic communityMemberTopic() {
         return new NewTopic(communityMember, 1, (short)1);
+    }
+
+    @Bean
+    public NewTopic communitySearch() {
+        return new NewTopic(communitySearch, 1, (short)1);
     }
 
     @Bean

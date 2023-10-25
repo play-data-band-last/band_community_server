@@ -4,8 +4,12 @@ package com.example.community.service;
 import com.example.community.domain.entity.Community;
 import com.example.community.domain.request.CommunityMemberReqeust;
 import com.example.community.domain.request.CommunityReqeust;
+import com.example.community.domain.request.CommunitySearchRequest;
 import com.example.community.domain.response.CommunityResponse;
+//import com.example.community.kafka.CommunityMemberProducer;
+//import com.example.community.kafka.CommunitySearchProducer;
 import com.example.community.kafka.CommunityMemberProducer;
+import com.example.community.kafka.CommunitySearchProducer;
 import com.example.community.repository.CommunityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,15 +23,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommunityService {
     private final CommunityRepository communityRepository;
-//    private final CommunityMemberClient communityMemberClient;
     private final CommunityMemberProducer communityMemberProducer;
+    private final CommunitySearchProducer communitySearchProducer;
 
     @Transactional
     public void save(CommunityReqeust communityReqeust) throws Exception {
-        try {
-            Community save = communityRepository.save(communityReqeust.toEntity());
+//        try {
+        Community save = communityRepository.save(communityReqeust.toEntity());
 
-            CommunityMemberReqeust communityMemberReqeust = CommunityMemberReqeust.builder()
+        CommunityMemberReqeust communityMemberReqeust = CommunityMemberReqeust.builder()
                     .memberId(communityReqeust.getOwnerId())
                     .memberRole("모임장")
                     .memberName(communityReqeust.getName())
@@ -36,11 +40,22 @@ public class CommunityService {
                     .communityId(save.getId())
                     .build();
 
-            //            communityMemberClient.saveCommunityMember(save.getId(), communityMemberReqeust);
+        CommunitySearchRequest communitySearchRequest = CommunitySearchRequest.builder()
+                .name(save.getName())
+                .ownerId(save.getOwnerId())
+                .profileImage(communityReqeust.getProfileImage())
+                .description(save.getDescription())
+                .category(save.getCategory())
+                .interest(save.getInterest())
+                .communityId(save.getId())
+                .build();
+
+
+            communitySearchProducer.send(communitySearchRequest);
+
             communityMemberProducer.send(communityMemberReqeust);
-        }catch (Exception e){
-            throw new Exception("Community Save Failed");
-        }
+
+
     };
 
     public Page<Community> findAllByMemberId(String memberId){
@@ -94,5 +109,6 @@ public class CommunityService {
     ){
         return communityRepository.findByGenerateOrder(pageRequest);
     }
+
 
 }

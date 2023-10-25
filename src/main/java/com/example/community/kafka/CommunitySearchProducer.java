@@ -1,6 +1,9 @@
 package com.example.community.kafka;
 
+import com.example.community.domain.entity.Community;
 import com.example.community.domain.request.CommunityMemberReqeust;
+import com.example.community.domain.request.CommunityReqeust;
+import com.example.community.domain.request.CommunitySearchRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.Callback;
@@ -10,18 +13,16 @@ import org.apache.kafka.clients.producer.RecordMetadata;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.Future;
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class CommunityMemberProducer {
-    private final ProducerFactory<String, CommunityMemberReqeust> producerFactory;
+public class CommunitySearchProducer {
+    private final ProducerFactory<String, CommunitySearchRequest> producerFactory;
 
-    public void send(CommunityMemberReqeust communityMemberReqeust) {
-        KafkaProducer<String, CommunityMemberReqeust> kafkaProducer = new KafkaProducer<>(producerFactory.getConfigurationProperties());
+    public void send(CommunitySearchRequest communitySearchRequest) {
+        KafkaProducer<String, CommunitySearchRequest> kafkaProducer = new KafkaProducer<>(producerFactory.getConfigurationProperties());
 
-        kafkaProducer.send(new ProducerRecord<>(TopicConfig.communityMember, communityMemberReqeust), new Callback() {
+        kafkaProducer.send(new ProducerRecord<>(TopicConfig.communitySearch, communitySearchRequest), new Callback() {
             @Override
             public void onCompletion(RecordMetadata metadata, Exception exception) {
                 log.info("Kafka 전송 성공: {}", metadata);

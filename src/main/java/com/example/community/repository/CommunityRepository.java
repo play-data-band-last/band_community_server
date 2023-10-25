@@ -34,4 +34,5 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
             "order by c.id desc ")
     Page<CommunityResponse> findByGenerateOrder( PageRequest pageRequest);
 
+
 }
