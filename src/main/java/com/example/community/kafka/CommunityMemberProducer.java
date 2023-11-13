@@ -19,6 +19,7 @@ public class CommunityMemberProducer {
     private final ProducerFactory<String, CommunityMemberReqeust> producerFactory;
 
     public void send(CommunityMemberReqeust communityMemberReqeust) {
+        // 나중에 주입받는걸로 바꾸자;
         KafkaProducer<String, CommunityMemberReqeust> kafkaProducer = new KafkaProducer<>(producerFactory.getConfigurationProperties());
 
         kafkaProducer.send(new ProducerRecord<>(TopicConfig.communityMember, communityMemberReqeust), new Callback() {

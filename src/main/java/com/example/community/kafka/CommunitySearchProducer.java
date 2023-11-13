@@ -1,8 +1,5 @@
 package com.example.community.kafka;
 
-import com.example.community.domain.entity.Community;
-import com.example.community.domain.request.CommunityMemberReqeust;
-import com.example.community.domain.request.CommunityReqeust;
 import com.example.community.domain.request.CommunitySearchRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

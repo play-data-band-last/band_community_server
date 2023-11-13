@@ -3,11 +3,9 @@ package com.example.community.service;
 
 import com.example.community.domain.entity.Community;
 import com.example.community.domain.request.CommunityMemberReqeust;
-import com.example.community.domain.request.CommunityReqeust;
+import com.example.community.domain.request.CommunityRequest;
 import com.example.community.domain.request.CommunitySearchRequest;
 import com.example.community.domain.response.CommunityResponse;
-//import com.example.community.kafka.CommunityMemberProducer;
-//import com.example.community.kafka.CommunitySearchProducer;
 import com.example.community.kafka.CommunityMemberProducer;
 import com.example.community.kafka.CommunitySearchProducer;
 import com.example.community.repository.CommunityRepository;
@@ -27,23 +25,23 @@ public class CommunityService {
     private final CommunitySearchProducer communitySearchProducer;
 
     @Transactional
-    public void save(CommunityReqeust communityReqeust) throws Exception {
+    public void save(CommunityRequest communityRequest) throws Exception {
 //        try {
-        Community save = communityRepository.save(communityReqeust.toEntity());
+        Community save = communityRepository.save(communityRequest.toEntity());
 
         CommunityMemberReqeust communityMemberReqeust = CommunityMemberReqeust.builder()
-                    .memberId(communityReqeust.getOwnerId())
+                    .memberId(communityRequest.getMemberId())
                     .memberRole("모임장")
-                    .memberName(communityReqeust.getName())
-                    .communityName(communityReqeust.getDescription())
-                    .communityImage(communityReqeust.getProfileImage())
+                    .memberName(communityRequest.getMemberName())
+                    .communityName(communityRequest.getDescription())
+                    .communityImage(communityRequest.getCommunityImage())
                     .communityId(save.getId())
                     .build();
 
         CommunitySearchRequest communitySearchRequest = CommunitySearchRequest.builder()
                 .name(save.getName())
                 .ownerId(save.getOwnerId())
-                .profileImage(communityReqeust.getProfileImage())
+                .profileImage(communityRequest.getCommunityImage())
                 .description(save.getDescription())
                 .category(save.getCategory())
                 .interest(save.getInterest())
@@ -79,14 +77,14 @@ public class CommunityService {
     }
 
     @Transactional
-    public void updateById(Long communityId, CommunityReqeust communityReqeust){
+    public void updateById(Long communityId, CommunityRequest communityRequest){
         Community community = communityRepository.findById(communityId).get();
-        community.setCategory(communityReqeust.getCategory());
-        community.setInterest(communityReqeust.getInterest());
-        community.setName(communityReqeust.getName());
-        community.setLocation(communityReqeust.getLocation());
-        community.setProfileImage(communityReqeust.getProfileImage());
-        community.setDescription(communityReqeust.getDescription());
+        community.setCategory(communityRequest.getCategory());
+        community.setInterest(communityRequest.getInterest());
+        community.setName(communityRequest.getCommunityName());
+        community.setLocation(communityRequest.getLocation());
+        community.setProfileImage(communityRequest.getCommunityImage());
+        community.setDescription(communityRequest.getDescription());
 
         // communityMemberTableUpdate
 //        communityMemberClient.updateCommunityInCommunityMember(

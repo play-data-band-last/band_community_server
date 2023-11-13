@@ -1,6 +1,6 @@
 package com.example.community.controller;
 
-import com.example.community.domain.request.CommunityReqeust;
+import com.example.community.domain.request.CommunityRequest;
 import com.example.community.domain.response.CommunityResponse;
 import com.example.community.service.CommunityService;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +17,8 @@ public class CommunityController {
     private final CommunityService communityService;
 
     @PostMapping
-    public void save(@RequestBody CommunityReqeust communityReqeust) throws Exception {
-        communityService.save(communityReqeust);
+    public void save(@RequestBody CommunityRequest communityRequest) throws Exception {
+        communityService.save(communityRequest);
     }
 
     @GetMapping("/{communityId}")
@@ -67,8 +67,8 @@ public class CommunityController {
     //커뮤니티 업데이트(다른 디비에 트랜잭션 처리 필요함)
     @PutMapping("/{updateById}")
     public void updateById(@PathVariable("updateById") Long updateById,
-                           @RequestBody CommunityReqeust communityReqeust){
-        communityService.updateById(updateById, communityReqeust);
+                           @RequestBody CommunityRequest communityRequest){
+        communityService.updateById(updateById, communityRequest);
     }
 
 }

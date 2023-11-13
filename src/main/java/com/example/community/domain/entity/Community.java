@@ -4,6 +4,8 @@ package com.example.community.domain.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Table(name = "Communities")
@@ -20,5 +22,6 @@ public class Community {
     private String interest;
     private String description;
     private String profileImage;
+    private OffsetDateTime date;
 
 }
