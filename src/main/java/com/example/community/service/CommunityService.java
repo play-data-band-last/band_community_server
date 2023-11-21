@@ -6,6 +6,7 @@ import com.example.community.domain.request.CommunityMemberReqeust;
 import com.example.community.domain.request.CommunityRequest;
 import com.example.community.domain.request.CommunitySearchRequest;
 import com.example.community.domain.response.CommunityResponse;
+
 import com.example.community.kafka.CommunityMemberProducer;
 import com.example.community.kafka.CommunitySearchProducer;
 import com.example.community.repository.CommunityRepository;
