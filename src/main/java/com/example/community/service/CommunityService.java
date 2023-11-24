@@ -37,7 +37,10 @@ public class CommunityService {
                     .communityName(communityRequest.getDescription())
                     .communityImage(communityRequest.getCommunityImage())
                     .communityId(save.getId())
+                    .memberImage(communityRequest.getMemberImage())
+                    .ownerId(communityRequest.getMemberId())
                     .build();
+
 
         CommunitySearchRequest communitySearchRequest = CommunitySearchRequest.builder()
                 .name(save.getName())

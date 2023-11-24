@@ -15,4 +15,5 @@ public class CommunityMemberReqeust {
     private String communityName;
     private String communityImage;
     private Long communityId;
+    private Long ownerId;
 }
